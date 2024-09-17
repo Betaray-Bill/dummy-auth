@@ -1,34 +1,49 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import axios from 'axios'
 import './App.css'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import Home from './Home'
+import Login from './Login'
+import Dashboard from './Dashboard'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [state, setState] = useState("")
+  const addState = async(e) => {
+    e.preventDefault()
+    // Perform form submission logic here
+    console.log(formData)
+    console.log(state)
+    if(state.length > 0){
+      try{
+        const res = await axios.post('http://localhost:5000/api/location/addState', {name: state})
+        const data = await res.data
+        console.log(data)
+  
+      }catch(e){
+        console.log(e)
+      }
+    }
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/home" element={<Home />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/dashboard" element={<Dashboard />}></Route>
+        </Routes>
+      </BrowserRouter>
+
+      {/* {
+        user.name && 
+        <form onSubmit={addState}>
+          <input type="text" name="state" onChange={(e) => setState(e.target.value)} />
+          <button type="submit">Add State</button>
+        </form>
+      } */}
+    </div>
   )
 }
 

@@ -2,7 +2,9 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import userRoutes from './routes/userRoutes.js';
+import stateRoutes from './routes/stateRoutes.js';
 import mongoose from 'mongoose';
+import cors from 'cors'
 dotenv.config();
 
 // CONNECT DB ------------------------------
@@ -19,11 +21,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+const corsOptions = {
+    origin: ["http://localhost:5173"], //(https://your-client-app.com)
+    optionsSuccessStatus: 200,
+    credentials:true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], 
+};
+
+app.use(cors(corsOptions));
+
+
+
 app.get('/', function(req, res){
     return res.send('hi')
 })
 
 app.use("/api/user", userRoutes)
+app.use("/api/location", stateRoutes)
 
 app.listen(process.env.PORT, () =>
     console.log(`Server running in 5000 mode on port ${process.env.PORT}`)
