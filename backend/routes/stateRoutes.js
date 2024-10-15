@@ -5,10 +5,10 @@ import { isAdminValidation, protect, verifyUser } from '../middleware/authMiddle
 const router = express.Router();
 
 
-router.route("/addState").post(verifyUser ,addState)
-router.route("/addDistrict").post(protect, isAdminValidation, addDistrict)
-router.route("/getDistrict/:districtId").get(protect, getDistrictPrice)
-router.route("/getState/:stateId").get(protect, getDistrictByState)
+router.route("/addState").post(verifyUser, addState)
+router.route("/addDistrict").post(verifyUser, isAdminValidation, addDistrict)
+router.route("/getDistrict/:districtId").get(verifyUser, getDistrictPrice)
+router.route("/getState/:stateId").get(verifyUser, getDistrictByState)
 
 
 export default router;
